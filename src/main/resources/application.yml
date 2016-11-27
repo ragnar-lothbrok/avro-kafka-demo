@@ -1,0 +1,6 @@
+server:
+  port: 8080
+producer:
+  bootstrap: localhost:9092
+  topic: test
+  group: clicks
