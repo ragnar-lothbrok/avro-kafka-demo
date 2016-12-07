@@ -3,7 +3,7 @@ package avro.demo.multipleConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import avro.demo.model.ClickRetry;
+import avro.demo.model.FeedRetry;
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.message.MessageAndMetadata;
@@ -12,42 +12,47 @@ public class ConsumerThread implements Runnable {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConsumerThread.class);
 
-	private KafkaStream<String, ClickRetry> m_stream;
-	private int m_threadNumber;
-	private KafkaPublisherService kafkaPublisherService;
+	private KafkaStream<String, FeedRetry> m_stream;
+	private String streamName;
+	private String topicName;
+	private FeedKafkaConsumer feedKafkaConsumer;
 
-	public ConsumerThread(KafkaStream<String, ClickRetry> m_stream, int m_threadNumber, KafkaPublisherService kafkaPublisherService) {
+	public ConsumerThread(KafkaStream<String, FeedRetry> m_stream, String streamName, FeedKafkaConsumer feedKafkaConsumer, String topicName) {
 		super();
 		this.m_stream = m_stream;
-		this.m_threadNumber = m_threadNumber;
-		this.kafkaPublisherService = kafkaPublisherService;
+		this.streamName = streamName;
+		this.feedKafkaConsumer = feedKafkaConsumer;
+		this.topicName = topicName;
 	}
 
 	@Override
 	public void run() {
 		try {
-			ClickRetry message = null;
-			logger.info("started listener thread: {}", m_threadNumber);
-			ConsumerIterator<String, ClickRetry> it = m_stream.iterator();
+			FeedRetry message = null;
+			logger.info("started listening stream:  " + streamName);
+			ConsumerIterator<String, FeedRetry> it = m_stream.iterator();
 			while (it.hasNext()) {
-				MessageAndMetadata<String, ClickRetry> msg = it.next();
+				MessageAndMetadata<String, FeedRetry> msg = it.next();
 				try {
 					if (msg != null) {
 						message = msg.message();
-						Long offSet = msg.offset();
-						kafkaPublisherService.dispatch(message);
-						logger.info("receive message by " + m_threadNumber + " : " + message);
-					} else {
-						logger.info("receive message by " + m_threadNumber + " : " + msg);
 					}
 				} catch (Exception ex) {
-					logger.error("error processing queue for message: " + message, ex);
+					logger.error("error processing queue for message {} ", ex);
 				}
 			}
-			logger.info("Shutting down listener thread: " + m_threadNumber);
 		} catch (Exception ex) {
-			logger.error("error:", ex);
+			logger.error("Exception on message {}", ex);
+		} finally {
+			try {
+				if (this.m_stream != null) {
+					this.m_stream.clear();
+					feedKafkaConsumer.removeStream(topicName, streamName);
+				}
+			} catch (Exception e) {
+				logger.error("Exception while unregistering {} ", e);
+			}
 		}
+		logger.info("Shutting down listener stream: " + streamName);
 	}
-
 }

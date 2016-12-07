@@ -2,7 +2,7 @@ package avro.demo.model;
 
 import java.io.Serializable;
 
-public class Click implements Serializable {
+public class Feed implements Serializable {
 
 	private static final long serialVersionUID = -3685011001734654135L;
 

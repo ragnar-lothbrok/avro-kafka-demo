@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import avro.demo.model.Click;
+import avro.demo.model.Feed;
 import avro.demo.services.ProducerService;
 
 @RestController
@@ -19,7 +19,7 @@ public class ProducerController {
 
 	@RequestMapping(
 		method = RequestMethod.POST)
-	public boolean sendMessage(@RequestBody Click message) {
+	public boolean sendMessage(@RequestBody Feed message) {
 		return producerService.dispatch(message);
 	}
 

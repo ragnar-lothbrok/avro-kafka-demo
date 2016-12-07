@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import avro.demo.config.KafkaProperties;
-import avro.demo.model.ClickRetry;
+import avro.demo.model.FeedRetry;
 import kafka.javaapi.producer.Producer;
 import kafka.serializer.Decoder;
 import kafka.serializer.StringDecoder;
@@ -41,7 +41,7 @@ public class FeedKafkaProducerConfiguration {
 
 	@Bean(
 		value = "feedKafkaProducer")
-	public Producer<String, ClickRetry> feedKafkaProducer() {
+	public Producer<String, FeedRetry> feedKafkaProducer() {
 		Properties kafkaProps = new Properties();
 		kafkaProps.put("metadata.broker.list", kafkaProperties.getBrokers());
 		kafkaProps.put("key.serializer.class", "kafka.serializer.StringEncoder");
@@ -49,8 +49,9 @@ public class FeedKafkaProducerConfiguration {
 		kafkaProps.put("partitioner.class", "avro.demo.multipleConsumer.CustomPartitioner");
 		kafkaProps.put("request.required.acks", "1");
 		kafkaProps.put("producer.type", "sync");
+		logger.info("Config {} ",kafkaProps);
 		kafka.producer.ProducerConfig producerConfig = new kafka.producer.ProducerConfig(kafkaProps);
-		return new Producer<String, ClickRetry>(producerConfig);
+		return new Producer<String, FeedRetry>(producerConfig);
 	}
 
 }

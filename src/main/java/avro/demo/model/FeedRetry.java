@@ -8,11 +8,7 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-@JsonInclude(Include.NON_NULL)
-public class ClickRetry extends Click {
+public class FeedRetry extends Feed {
 
 	private static final long serialVersionUID = 1L;
 
@@ -72,7 +68,7 @@ public class ClickRetry extends Click {
 	}
 
 	public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException {
-		ClickRetry clickRetry = new ClickRetry();
+		FeedRetry clickRetry = new FeedRetry();
 		for (int i = 0; i < 10; i++) {
 			clickRetry.setSupc(UUID.randomUUID().toString());
 			clickRetry.setPogId(new Random().nextLong());

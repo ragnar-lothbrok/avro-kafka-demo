@@ -17,7 +17,7 @@ public class CustomPartitioner extends DefaultPartitioner {
 		if (key != null) {
 			return (key+"").hashCode() % numPartitions;
 		} else {
-			return 1;
+			return 0;
 		}
 	}
 }

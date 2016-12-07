@@ -10,17 +10,17 @@ public class ClickConsumer implements Runnable {
 
 	private static final Logger log = LoggerFactory.getLogger(ClickConsumer.class);
 
-	private final KafkaConsumer<String, Click> clickConsumer;
+	private final KafkaConsumer<String, Feed> clickConsumer;
 
-	public ClickConsumer(KafkaConsumer<String, Click> clickConsumer) {
+	public ClickConsumer(KafkaConsumer<String, Feed> clickConsumer) {
 		this.clickConsumer = clickConsumer;
 	}
 
 	public void run() {
 		try {
 			while (true) {
-				ConsumerRecords<String, Click> records = this.clickConsumer.poll(100);
-				for (ConsumerRecord<String, Click> record : records) {
+				ConsumerRecords<String, Feed> records = this.clickConsumer.poll(100);
+				for (ConsumerRecord<String, Feed> record : records) {
 					log.info("consuming from topic = {}, partition = {}, offset = {}, key = {}, value = {}", record.topic(), record.partition(),
 							record.offset(), record.key(), record.value());
 

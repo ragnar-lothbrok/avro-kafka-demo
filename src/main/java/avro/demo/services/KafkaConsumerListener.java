@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Service;
 
-import avro.demo.model.Click;
+import avro.demo.model.Feed;
 import avro.demo.model.ClickConsumer;
 
 @Service
@@ -19,11 +19,11 @@ public class KafkaConsumerListener implements SmartLifecycle {
 
 	private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-	private final KafkaConsumer<String, Click> kafkaConsumer;
+	private final KafkaConsumer<String, Feed> kafkaConsumer;
 
 	private volatile boolean running = false;
 
-	public KafkaConsumerListener(KafkaConsumer<String, Click> kafkaConsumer) {
+	public KafkaConsumerListener(KafkaConsumer<String, Feed> kafkaConsumer) {
         this.kafkaConsumer = kafkaConsumer;
     }
 

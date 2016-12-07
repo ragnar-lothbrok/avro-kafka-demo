@@ -1,8 +1,5 @@
 package avro.demo.multipleConsumer;
 
-import java.util.Random;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import avro.demo.config.KafkaProperties;
-import avro.demo.model.ClickRetry;
+import avro.demo.model.FeedRetry;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 
@@ -22,19 +19,16 @@ public class KafkaPublisherService {
 	@Autowired
 	@Qualifier(
 		value = "feedKafkaProducer")
-	private Producer<String, ClickRetry> feedKafkaProducer;
+	private Producer<String, FeedRetry> feedKafkaProducer;
 
 	@Autowired
 	private KafkaProperties kafkaroperties;
 
-	public boolean dispatch(ClickRetry message) {
-		ClickRetry clickRetry = new ClickRetry();
-		for (int i = 0; i < 10; i++) {
-			clickRetry.setSupc(UUID.randomUUID().toString());
-			clickRetry.setPogId(new Random().nextLong());
+	public boolean dispatch(FeedRetry message) {
+		if(message != null){
 			try {
-				KeyedMessage<String, ClickRetry> keyMsg = new KeyedMessage<String, ClickRetry>(kafkaroperties.getTopic(), clickRetry.getPogId() + "",
-						clickRetry);
+				KeyedMessage<String, FeedRetry> keyMsg = new KeyedMessage<String, FeedRetry>(kafkaroperties.getTopic(), message.getPogId() + "",
+						message);
 				this.feedKafkaProducer.send(keyMsg);
 				LOGGER.info("topic = {}, data = {}", kafkaroperties.getTopic(), keyMsg);
 			} catch (Exception e) {

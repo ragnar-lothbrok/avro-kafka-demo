@@ -12,7 +12,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import avro.demo.model.Click;
+import avro.demo.model.Feed;
 import avro.demo.serializers.JsonDeserializer;
 import avro.demo.serializers.JsonSerializer;
 
@@ -25,8 +25,8 @@ public class KafkaConfiguration {
 	}
 
 	@Bean
-	public Serializer<Click> clickSerializer() {
-		return new JsonSerializer<Click>();
+	public Serializer<Feed> clickSerializer() {
+		return new JsonSerializer<Feed>();
 	}
 
 	@Bean
@@ -35,13 +35,13 @@ public class KafkaConfiguration {
 	}
 
 	@Bean
-	public Deserializer<Click> clickDeserializer() {
-		return new JsonDeserializer<Click>(Click.class);
+	public Deserializer<Feed> clickDeserializer() {
+		return new JsonDeserializer<Feed>(Feed.class);
 	}
 
 	@Bean
-	public KafkaProducer<String, Click> clickProducer(KafkaProperties kafkaProperties) {
-		KafkaProducer<String, Click> producer = null;
+	public KafkaProducer<String, Feed> clickProducer(KafkaProperties kafkaProperties) {
+		KafkaProducer<String, Feed> producer = null;
 		Properties kafkaProps = new Properties();
 		kafkaProps.put("bootstrap.servers", kafkaProperties.getBootstrap());
 //		producer = new KafkaProducer<String, Click>(kafkaProps, stringKeySerializer(), clickSerializer());
@@ -49,11 +49,11 @@ public class KafkaConfiguration {
 	}
 
 	@Bean
-	public KafkaConsumer<String, Click> workUnitConsumer(KafkaProperties kafkaProperties) {
+	public KafkaConsumer<String, Feed> workUnitConsumer(KafkaProperties kafkaProperties) {
 		Properties props = new Properties();
 		props.put("bootstrap.servers", kafkaProperties.getBootstrap());
 		props.put("group.id", kafkaProperties.getGroup());
-		KafkaConsumer<String, Click> consumer = new KafkaConsumer<String, Click>(props, stringKeyDeserializer(), clickDeserializer());
+		KafkaConsumer<String, Feed> consumer = new KafkaConsumer<String, Feed>(props, stringKeyDeserializer(), clickDeserializer());
 		consumer.subscribe(Collections.singletonList(kafkaProperties.getTopic()));
 		return consumer;
 	}

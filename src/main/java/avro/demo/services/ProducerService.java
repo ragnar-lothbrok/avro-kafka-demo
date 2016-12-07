@@ -9,21 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import avro.demo.config.KafkaProperties;
-import avro.demo.model.Click;
+import avro.demo.model.Feed;
 
 @Service
 public class ProducerService {
 
 	@Autowired
-	private KafkaProducer<String, Click> clickProducer;
+	private KafkaProducer<String, Feed> clickProducer;
 
 	@Autowired
 	private KafkaProperties kafkaroperties;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProducerService.class);
 
-	public boolean dispatch(Click message) {
-		ProducerRecord<String, Click> record = new ProducerRecord<String, Click>(kafkaroperties.getTopic(), message.getTrackerId(), message);
+	public boolean dispatch(Feed message) {
+		ProducerRecord<String, Feed> record = new ProducerRecord<String, Feed>(kafkaroperties.getTopic(), message.getTrackerId(), message);
 		try {
 			RecordMetadata recordMetadata = this.clickProducer.send(record).get();
 			LOGGER.info("topic = {}, partition = {}, offset = {}, workUnit = {}", recordMetadata.topic(), recordMetadata.partition(),
