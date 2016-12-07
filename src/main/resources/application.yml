@@ -1,6 +1,8 @@
 server:
   port: 8080
 producer:
-  bootstrap: localhost:9092
-  topic: test
-  group: clicks
+  bootstrap: localhost:2181
+  brokers: localhost:9092
+  topic: nrt_feed_data
+  group: nrt_data
+  partitionCount: 6

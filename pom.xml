@@ -49,10 +49,17 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>0.9.0.0</version>
 		</dependency>
+		<!-- KAFKA => version is important -->
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.11</artifactId>
 			<version>0.9.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.kafka</groupId>
+					<artifactId>kafka-clients</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 	</dependencies>

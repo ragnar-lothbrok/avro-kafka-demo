@@ -8,6 +8,8 @@ public class Click implements Serializable {
 
 	private String trackerId;
 	private Boolean clicked;
+	private Long pogId;
+	private String supc;
 
 	@Override
 	public String toString() {
@@ -28,6 +30,22 @@ public class Click implements Serializable {
 
 	public void setClicked(Boolean clicked) {
 		this.clicked = clicked;
+	}
+
+	public Long getPogId() {
+		return pogId;
+	}
+
+	public void setPogId(Long pogId) {
+		this.pogId = pogId;
+	}
+
+	public String getSupc() {
+		return supc;
+	}
+
+	public void setSupc(String supc) {
+		this.supc = supc;
 	}
 
 }

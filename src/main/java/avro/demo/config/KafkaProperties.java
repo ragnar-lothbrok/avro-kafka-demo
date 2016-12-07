@@ -11,6 +11,24 @@ public class KafkaProperties {
 	private String bootstrap;
 	private String topic;
 	private String group;
+	private Integer partitionCount;
+	private String brokers;
+
+	public String getBrokers() {
+		return brokers;
+	}
+
+	public void setBrokers(String brokers) {
+		this.brokers = brokers;
+	}
+
+	public Integer getPartitionCount() {
+		return partitionCount;
+	}
+
+	public void setPartitionCount(Integer partitionCount) {
+		this.partitionCount = partitionCount;
+	}
 
 	public String getGroup() {
 		return group;
